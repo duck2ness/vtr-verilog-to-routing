@@ -1197,7 +1197,7 @@ static enum e_block_pack_status try_pack_molecule(
                         // the chain direct links between clusters
                         if (molecule->chain_info->is_long_chain) {
                             cluster_placement_stats_ptr->has_long_chain = true;
-                            if (molecule->chain_info->chain_id == -1) {
+                            if (molecule->chain_info->chain_id == -1 && molecule->pack_pattern->chain_root_pins.size() > 1) {
                                 update_molecule_chain_info(molecule, primitives_list[molecule->root]);
                             }
                         }
@@ -2893,6 +2893,7 @@ static t_pb_graph_pin* get_driver_pb_graph_pin(const t_pb* driver_pb, const Atom
     auto driver_port_id = atom_ctx.nlist.pin_port(driver_pin_id);
     auto driver_model_port = atom_ctx.nlist.port_model(driver_port_id);
     // find the port id of the port containing the driving pin in the driver_pb_type
+    // TODO: Replace this for loop by the cached value port.port_index_by_type
     for (int i = 0; i < driver_pb_type->num_ports; i++) {
         auto& prim_port = driver_pb_type->ports[i];
         if (prim_port.type == OUT_PORT) {
@@ -3172,7 +3173,7 @@ static enum e_block_pack_status check_chain_root_placement_feasibility(
 
             auto chain_id = molecule->chain_info->chain_id;
             // if this chain has a chain id assigned to it
-            if (chain_id != -1) {
+            if (chain_id != -1 && molecule->pack_pattern->chain_root_pins.size() > 1) {
                 // the chosen primitive should be a valid starting point for the chain
                 if (pb_graph_node != chain_root_pins[chain_id]->parent_node) {
                     block_pack_status = BLK_FAILED_FEASIBLE;
