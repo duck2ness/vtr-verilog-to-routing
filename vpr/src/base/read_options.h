@@ -52,6 +52,7 @@ struct t_options {
     argparse::ArgValue<bool> strict_checks;
     argparse::ArgValue<std::string> disable_errors;
     argparse::ArgValue<std::string> suppress_warnings;
+    argparse::ArgValue<bool> allow_dangling_combinational_nodes;
 
     /* Atom netlist options */
     argparse::ArgValue<bool> absorb_buffer_luts;
@@ -120,6 +121,7 @@ struct t_options {
     argparse::ArgValue<bool> verify_binary_search;
     argparse::ArgValue<e_router_algorithm> RouterAlgorithm;
     argparse::ArgValue<int> min_incremental_reroute_fanout;
+    argparse::ArgValue<bool> disable_check_route;
 
     /* Timing-driven router options only */
     argparse::ArgValue<float> astar_fac;
